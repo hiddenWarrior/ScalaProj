@@ -12,9 +12,11 @@ import Themodel._
 
 
 // import connect.connect._
+import scala.concurrent.ExecutionContext
 
 object HelloAkkaScala extends App with SimpleRoutingApp{
   implicit val actorSystem = ActorSystem()
+
 
 
   //import org.json4s.JsonDSL._
@@ -82,9 +84,12 @@ import UserObject._
   import MyJsonProtocol._
   //import MyJsonProtocol2._
   
-  
+  import UserObject._
   //import OrderJsonProtocol._
+  import akka.http.scaladsl.model.StatusCodes._
+
 import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader, BSONObjectID}
+import scala.util.{Success, Failure}
 
   startServer(interface="localhost", port = 8080){
         
@@ -92,8 +97,11 @@ import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader,
           post{
             entity(as[User]){user =>
                   Themodel.add(user.toObjFullUser)
-                  complete(Themodel.get)
-                  
+                  //Future{List(1,2,3)}.map{ll => ll.map{a => println(a)} }
+                  complete(Themodel.get() map{
+                        user => OK -> user
+
+                    } )
 
             }    
           }

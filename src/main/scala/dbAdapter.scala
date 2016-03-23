@@ -21,7 +21,7 @@ import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader,
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.api._
 
-
+import UserObject._
 
 object DbAdapter{
 
@@ -42,8 +42,9 @@ object DbAdapter{
     def get(colName:String,query:BSONDocument) = {
   		//collections.getOrElse(colName,defaultDb).find(query).cursor[BSONDocument].collect[List]()
     	//db[BSONCollection]("user").find(query).one[BSONDocument]//.cursor[BSONDocument].collect[List]()
-    	db[BSONCollection]("user").find(BSONDocument()).cursor[BSONDocument].toList()
-		// got the list of documents (in a fully non-blocking way)
+    	//db[BSONCollection]("user").find(BSONDocument()).cursor[UserObject].toList()//.map(doc => doc.toString())
+		db[BSONCollection]("user").find(BSONDocument()).one[UserObject]
+        // got the list of documents (in a fully non-blocking way)
 		
     }
 

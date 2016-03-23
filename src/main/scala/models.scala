@@ -151,6 +151,8 @@ object UserFields{
 
 
   import UserFields._
+import UserObject.UserBSONWriter
+import UserObject.UserBSONReader
 
 
 object Themodel{
@@ -180,8 +182,10 @@ def add(a:UserObject){
 
 
 def get() = {
-  DbAdapter.get("user",BSONDocument()).map(docOpt => docOpt.map(doc => "a"/*UserObject.read(doc)*/)); 
+  //DbAdapter.get("user",BSONDocument()).map(docOpt => docOpt.map(doc => "a"/*UserObject.read(doc)*/));
+  DbAdapter.get("user",BSONDocument())
 }
+  // val filter = BSONDocument("_id" -> 1)
 
 def connect(){ 
     
