@@ -62,6 +62,7 @@ object UserFields{
 
 
   }
+}
   
   case class UserSignin(name: String , email: String){
   
@@ -95,7 +96,7 @@ object UserFields{
         UserObject(name = u.name,email = u.email, password = u.password,followers = u.followers , followings = u.followings)
       }
 
-   
+      
       implicit object UserBSONReader extends BSONDocumentReader[UserObject] {
             def read(doc: BSONDocument): UserObject = {
             UserObject(
@@ -111,29 +112,44 @@ object UserFields{
         }
 
       }
+                  def read(doc: BSONDocument): UserObject = {
+            UserObject(
+              id = doc.getAs[BSONObjectID]("_id").get,
+              name = doc.getAs[String]("name").get,
+              email = doc.getAs[String]("email").get,
+              password = doc.getAs[String]("password").get,
+              /*followers = List[String](),
+              followings = List[String]()*/
+              followers = doc.getAs[List[String]]("followers").get.toList,
+              followings = doc.getAs[List[String]]("followings").get.toList
+            )
+        }
 
-    implicit object UserBSONWriter extends BSONDocumentWriter[UserObject] {
-    def write( u:UserObject ): BSONDocument ={
-      BSONDocument(
-        "_id" -> u.id,
-        "name" -> u.name,
-        "email" -> u.email,
-        "password" -> u.password,
-        "followers" -> u.followers,
-        "followings" -> u.followings)
+        implicit object UserBSONWriter extends BSONDocumentWriter[UserObject] {
+        def write( u:UserObject ): BSONDocument ={
+          BSONDocument(
+            "_id" -> u.id,
+            "name" -> u.name,
+            "email" -> u.email,
+            "password" -> u.password,
+            "followers" -> u.followers,
+            "followings" -> u.followings)
+          }
+        }
+
       }
-    }
+
+    
 
 
 
 
 
 
+  
 
-  }
 
 
-}
   import UserFields._
 
 
@@ -158,8 +174,13 @@ import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader,
 
 def add(a:UserObject){
 
-  collection.insert(a.toBson);
-   
+  //collection.insert(a.toBson);
+  DbAdapter.add("user",a.toBson); 
+}
+
+
+def get() = {
+  DbAdapter.get("user",BSONDocument()).map(docOpt => docOpt.map(doc => "a"/*UserObject.read(doc)*/)); 
 }
 
 def connect(){ 

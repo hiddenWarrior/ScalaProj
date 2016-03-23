@@ -11,7 +11,6 @@ import Themodel._
 
 
 
-
 // import connect.connect._
 
 object HelloAkkaScala extends App with SimpleRoutingApp{
@@ -85,6 +84,7 @@ import UserObject._
   
   
   //import OrderJsonProtocol._
+import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader, BSONObjectID}
 
   startServer(interface="localhost", port = 8080){
         
@@ -92,7 +92,8 @@ import UserObject._
           post{
             entity(as[User]){user =>
                   Themodel.add(user.toObjFullUser)
-                  complete(user.toFullUser.toJson.prettyPrint)
+                  complete(Themodel.get)
+                  
 
             }    
           }

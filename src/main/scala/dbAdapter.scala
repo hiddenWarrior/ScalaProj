@@ -28,9 +28,37 @@ object DbAdapter{
 	val driver = new MongoDriver
     val connection = driver.connection(List("localhost"))
     
-    
     // Gets a reference to the database "plugin"
     val db = connection("tweets")
+    val defaultDb = db[BSONCollection]("user");
     val collections = Map("user" -> db[BSONCollection]("user"),"tweet" -> db[BSONCollection]("tweet"))
-    
-} 
+
+
+
+    def add(colName:String,doc:BSONDocument) = {
+  		collections.getOrElse(colName,defaultDb).insert(doc);
+    }
+
+    def get(colName:String,query:BSONDocument) = {
+  		//collections.getOrElse(colName,defaultDb).find(query).cursor[BSONDocument].collect[List]()
+    	//db[BSONCollection]("user").find(query).one[BSONDocument]//.cursor[BSONDocument].collect[List]()
+    	db[BSONCollection]("user").find(BSONDocument()).cursor[BSONDocument].toList()
+		// got the list of documents (in a fully non-blocking way)
+		
+    }
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+ 
