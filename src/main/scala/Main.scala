@@ -6,8 +6,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.concurrent.Future
 
-import Themodel._
 
+
+
+import Themodel._
+  import spray.json._
+  import DefaultJsonProtocol._ // if you don't supply your own Protocol (see below)
+  
 
 
 
@@ -16,33 +21,6 @@ import scala.concurrent.ExecutionContext
 
 object HelloAkkaScala extends App with SimpleRoutingApp{
   implicit val actorSystem = ActorSystem()
-
-
-
-  //import org.json4s.JsonDSL._
-  //import org.json4s.JsonDSL.WithDouble._
-  //import org.json4s.JsonDSL.WithBigDecimal._
-  //import org.json4s._
-  //import org.json4s.native.JsonMethods._
-
-
-  import spray.json._
-  import DefaultJsonProtocol._ // if you don't supply your own Protocol (see below)
-  //import RootJsonFormat._ // if you don't supply your own Protocol (see below)
-  import spray.httpx.SprayJsonSupport.sprayJsonUnmarshaller
-
-
-  //case class Myuser(name: String)
-  //object Myuser {
-    
-  //}
-
-  import UserFields._
-
-  import TweetFields._
-
-
-
 import scala.util._
 import reactivemongo.bson.BSONObjectID
 
@@ -60,19 +38,68 @@ implicit object BSONObjectIdProtocol extends RootJsonFormat[BSONObjectID] {
 import UserFields._
 import UserObject._
 
-  
+    import UserFields._
+
+  import TweetFields._
+  case class CaseString(id :String)
 
   object MyJsonProtocol extends DefaultJsonProtocol {
     implicit val userFormat = jsonFormat3(User.apply)
     implicit val fullUserFormat = jsonFormat5(FullUser.apply)
     implicit val objectUserFormat = jsonFormat6(UserObject.apply)
     implicit val userSigninFormat = jsonFormat2(UserSignin)
-    implicit val tweetSimpleFormat = jsonFormat2(TweetSimple)
+    implicit val tweetSimpleFormat = jsonFormat3(TweetSimple.apply)
+    implicit val simpleStringFormat = jsonFormat1(CaseString)
 
 
     //implicit val user2Format = jsonFormat2(User2)
     //implicit val userFormat = jsonFormat4(User)
   }
+
+
+  import MyJsonProtocol._
+  
+  import DefaultJsonProtocol._  
+
+  def jsonList(j:List[UserObject]): String = {
+
+    def baseJsonList(app:String , jsonList:List[UserObject]):String = {
+      if(jsonList.length > 1){
+         baseJsonList(app + jsonList.head.toJson.prettyPrint+",",jsonList.tail)
+      }
+      else if(jsonList.length == 1){
+        app+jsonList.head.toJson.prettyPrint+"]"        
+      }
+      else{
+
+        app+"]"        
+
+      }
+    }
+    baseJsonList("[",j)
+  }
+
+
+
+  //import org.json4s.JsonDSL._
+  //import org.json4s.JsonDSL.WithDouble._
+  //import org.json4s.JsonDSL.WithBigDecimal._
+  //import org.json4s._
+  //import org.json4s.native.JsonMethods._
+
+
+  //import RootJsonFormat._ // if you don't supply your own Protocol (see below)
+  import spray.httpx.SprayJsonSupport.sprayJsonUnmarshaller
+
+
+  //case class Myuser(name: String)
+  //object Myuser {
+    
+  //}
+
+
+
+
 
 
 
@@ -81,27 +108,33 @@ import UserObject._
     implicit val MyuserFormat = jsonFormat4(Myuser.apply)
   }*/
 
-  import MyJsonProtocol._
   //import MyJsonProtocol2._
-  
+  import spray.json._
+import DefaultJsonProtocol._  
   import UserObject._
   //import OrderJsonProtocol._
   import akka.http.scaladsl.model.StatusCodes._
 
 import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader, BSONObjectID}
 import scala.util.{Success, Failure}
+                      import spray.json._
+                      import DefaultJsonProtocol._ // if you don't supply your own Protocol (see below)
 
   startServer(interface="localhost", port = 8080){
         
         path("users"/"signup"){
           post{
             entity(as[User]){user =>
-                  Themodel.add(user.toObjFullUser)
-                  //Future{List(1,2,3)}.map{ll => ll.map{a => println(a)} }
-                  complete(Themodel.get() map{
-                        user => OK -> user
+                  val usr = user.toObjFullUser
+                  Themodel.add(usr)
+                  complete( CaseString(usr.id.stringify).toJson.prettyPrint )
+                  //onComplete(){
+                   //   case Success(value) => complete(value.id.stringify)
+                     //case Success(value) => complete( jsonList(value) )
+                     
+                   //  case Failure(ex)    => complete(s"An error occurred: ${ex.getMessage}")
 
-                    } )
+                  //}
 
             }    
           }
@@ -109,7 +142,18 @@ import scala.util.{Success, Failure}
         path("users"/"login"){
           post{
             entity(as[UserSignin]){(user)=>
-              complete(user.toJson.prettyPrint)            
+              //val objUser=Themodel.get(user.email,user.password)
+              //complete(CaseString(objUser.id.stringify).toJson.prettyPrint)
+              onComplete(Themodel.get(user.email,user.password)){
+                case Success(usr) => complete{
+                  if(usr == None)
+                    CaseString("0").toJson.prettyPrint
+                  else  
+                    CaseString(usr.get.id.stringify).toJson.prettyPrint}
+                //case Success(usr) => complete( )
+                case Failure(ex)  => complete(s"An error occurred: ${ex.getMessage}")                
+              }~complete{"not found"} 
+
             }
 
             }    
@@ -125,8 +169,9 @@ import scala.util.{Success, Failure}
         }~
         path("tweets"){
           post{
-            entity(as[TweetSimple]){(user)=>
-              complete(user.toJson.prettyPrint)            
+            entity(as[TweetSimple]){(tweet)=>
+              tweet.add()
+              complete(CaseString(tweet.id.stringify).toJson.prettyPrint)            
             }
 
             }    

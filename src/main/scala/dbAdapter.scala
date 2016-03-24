@@ -36,16 +36,20 @@ object DbAdapter{
 
 
     def add(colName:String,doc:BSONDocument) = {
-  		collections.getOrElse(colName,defaultDb).insert(doc);
+  		collections.getOrElse(colName,defaultDb).insert(doc)
     }
 
-    def get(colName:String,query:BSONDocument) = {
+ /*   def get(colName:String,query:BSONDocument) = {
   		//collections.getOrElse(colName,defaultDb).find(query).cursor[BSONDocument].collect[List]()
     	//db[BSONCollection]("user").find(query).one[BSONDocument]//.cursor[BSONDocument].collect[List]()
-    	//db[BSONCollection]("user").find(BSONDocument()).cursor[UserObject].toList()//.map(doc => doc.toString())
-		db[BSONCollection]("user").find(BSONDocument()).one[UserObject]
+    	db[BSONCollection]("user").find(BSONDocument()).cursor[UserObject].collect[List]()//.map(doc => doc.toString())
+		//db[BSONCollection]("user").find(BSONDocument()).one[UserObject]
         // got the list of documents (in a fully non-blocking way)
 		
+    }*/
+
+    def get(colName:String,query:BSONDocument) = {
+     collections.getOrElse(colName,defaultDb).find(query)   
     }
 
 

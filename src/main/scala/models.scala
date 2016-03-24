@@ -34,7 +34,39 @@ import UserObject._
 
 object TweetFields{
 
-  case class TweetSimple(body:String , userId:String)
+
+
+
+  
+  object TweetSimple {
+    def fromBson(doc: BSONDocument): TweetSimple = {
+      TweetSimple(
+        id = doc.getAs[BSONObjectID]("_id").get,
+        body = doc.getAs[String]("name").get,
+        author = doc.getAs[String]("email").get
+        
+            )
+        }
+
+    
+  }
+  case class TweetSimple(id:BSONObjectID ,body:String , author:String){
+    def add() = {
+      DbAdapter.add("tweet",toBson())
+
+    }
+
+
+    
+
+    def toBson(): BSONDocument ={
+      BSONDocument(
+        "_id" -> id,
+        "body" -> body,
+        "author" -> author)
+      }
+
+  }
 
 
 
@@ -63,8 +95,22 @@ object UserFields{
 
   }
 }
+
+
+
+
+class Jsonable{
+}
+
   
-  case class UserSignin(name: String , email: String){
+
+
+
+object ObjectsHandler{
+
+}
+  
+  case class UserSignin(password: String , email: String){
   
 
   }
@@ -78,7 +124,9 @@ object UserFields{
     
   }
 
-  case class UserObject(id: BSONObjectID = BSONObjectID.generate,name: String , email: String , password: String , followers: List[String] , followings: List[String]){
+
+
+  case class UserObject(id: BSONObjectID = BSONObjectID.generate,name: String , email: String , password: String , followers: List[String] , followings: List[String]) extends Jsonable{
        def toBson(): BSONDocument ={
       BSONDocument(
         "_id" -> id,
@@ -95,6 +143,7 @@ object UserFields{
       def rawUser(u: FullUser) = {
         UserObject(name = u.name,email = u.email, password = u.password,followers = u.followers , followings = u.followings)
       }
+      val nonUser = UserObject(id = BSONObjectID("0"),name = "a" , email = "" , password = ""  , followers = List("a") , followings = List("a") )
 
       
       implicit object UserBSONReader extends BSONDocumentReader[UserObject] {
@@ -155,6 +204,9 @@ import UserObject.UserBSONWriter
 import UserObject.UserBSONReader
 
 
+
+
+
 object Themodel{
 
     val driver = new MongoDriver
@@ -181,12 +233,12 @@ def add(a:UserObject){
 }
 
 
-def get() = {
-  //DbAdapter.get("user",BSONDocument()).map(docOpt => docOpt.map(doc => "a"/*UserObject.read(doc)*/));
-  DbAdapter.get("user",BSONDocument())
-}
-  // val filter = BSONDocument("_id" -> 1)
+def get(name :String , password: String) = {
 
+  //DbAdapter.get("user",BSONDocument()).map(docOpt => docOpt.map(doc => "a"/*UserObject.read(doc)*/));
+  DbAdapter.get("user",BSONDocument("email"-> name , "password" -> password)).one[UserObject]
+  // val filter = BSONDocument("_id" -> 1)
+}
 def connect(){ 
     
 
