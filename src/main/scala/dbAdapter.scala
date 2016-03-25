@@ -30,16 +30,14 @@ object DbAdapter{
     
     // Gets a reference to the database "plugin"
     val db = connection("tweets")
-    val defaultDb = db[BSONCollection]("user");
-    val collections = Map("user" -> db[BSONCollection]("user"),"tweet" -> db[BSONCollection]("tweet"))
-
-
-
+    //val defaultDb = db[BSONCollection]("user");
+    //val defaultDb = "user"
+    
     def add(colName:String,doc:BSONDocument) = {
-  		collections.getOrElse(colName,defaultDb).insert(doc)
+  		db[BSONCollection]("user").insert(doc)
     }
 
- /*   def get(colName:String,query:BSONDocument) = {
+    /*def get(colName:String,query:BSONDocument) = {
   		//collections.getOrElse(colName,defaultDb).find(query).cursor[BSONDocument].collect[List]()
     	//db[BSONCollection]("user").find(query).one[BSONDocument]//.cursor[BSONDocument].collect[List]()
     	db[BSONCollection]("user").find(BSONDocument()).cursor[UserObject].collect[List]()//.map(doc => doc.toString())
@@ -49,8 +47,16 @@ object DbAdapter{
     }*/
 
     def get(colName:String,query:BSONDocument) = {
-     collections.getOrElse(colName,defaultDb).find(query)   
+     db[BSONCollection]("user").find(query)
+
+     //db[BSONCollection]("user").find(BSONDocument()/*BSONDocument("author" -> "56f307df2100005000dda9c4")*/)   
     }
+    
+    def remove(colName:String,query:BSONDocument) = {
+     db[BSONCollection]("user").remove(query)
+     //db[BSONCollection]("tweet").find(BSONDocument())   
+    }
+
 
 
 

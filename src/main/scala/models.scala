@@ -24,6 +24,7 @@ import reactivemongo.api._
 
 
 
+  import UserFields._
 
 
 
@@ -34,19 +35,84 @@ import UserObject._
 
 object TweetFields{
 
+import UserObject.UserBSONWriter
+//import UserObject.UserBSONReader
 
 
 
   
   object TweetSimple {
+
+  import HelloAkkaScala.MyJsonProtocol._
+  def jsonList(j:List[TweetSimple]): String = {
+
+    def baseJsonList(app:String , jsonList:List[TweetSimple]):String = {
+      if(jsonList.length > 1){
+         baseJsonList(app + jsonList.head.toJson.prettyPrint+",",jsonList.tail)
+      }
+      else if(jsonList.length == 1){
+        app+jsonList.head.toJson.prettyPrint+"]"        
+      }
+      else{
+
+        app+"]"        
+
+      }
+    }
+    baseJsonList("[",j)
+  }
+
+    
+          implicit object UserBSONReader extends BSONDocumentReader[TweetSimple] {
+            def read(doc: BSONDocument): TweetSimple = {
+            TweetSimple(
+              id = doc.getAs[BSONObjectID]("_id").get,
+              body = doc.getAs[String]("body").get,
+              author = doc.getAs[String]("author").get
+            )
+        }
+
+      }
+
+      implicit object UserBSONWriter extends BSONDocumentWriter[TweetSimple] {
+        def write( u:TweetSimple ): BSONDocument ={
+        BSONDocument(
+        "_id" -> u.id,
+        "body" -> u.body,
+        "author" -> u.author)
+        }
+
+      }
+
+
+
+
     def fromBson(doc: BSONDocument): TweetSimple = {
       TweetSimple(
         id = doc.getAs[BSONObjectID]("_id").get,
-        body = doc.getAs[String]("name").get,
-        author = doc.getAs[String]("email").get
+        body = doc.getAs[String]("body").get,
+        author = doc.getAs[String]("author").get
         
             )
         }
+
+    def getByUser(u :String) = {
+      //DbAdapter.get("tweet",BSONDocument()).cursor[TweetSimple].collect[List]()
+      //DbAdapter.get("tweet",BSONDocument( "author"-> BSONDocument("$exists" -> 1) ) ).cursor[BSONDocument].collect[List]()//.toList()
+      DbAdapter.get("tweet",BSONDocument( "author"-> u ) ).cursor[BSONDocument].collect[List]()//.toList()
+
+    }
+
+    def getById(u :String)={
+      DbAdapter.get("tweet" , BSONDocument("_id" ->  BSONObjectID(u) ,"author" -> BSONDocument("$exists" -> 1) ) /*BSONDocument( "_id" -> BSONObjectID(u) )*/ ).one[BSONDocument]
+
+    }
+    
+    def removeById(u :String)={
+      DbAdapter.remove("tweet" , BSONDocument( "_id" -> BSONObjectID(u) , "author" -> BSONDocument("$exists" -> 1)) )
+
+    }
+
 
     
   }
@@ -140,6 +206,9 @@ object ObjectsHandler{
 
   }
   object UserObject{
+
+
+
       def rawUser(u: FullUser) = {
         UserObject(name = u.name,email = u.email, password = u.password,followers = u.followers , followings = u.followings)
       }
@@ -185,6 +254,10 @@ object ObjectsHandler{
             "followings" -> u.followings)
           }
         }
+      def getUser(id: String) = {
+        DbAdapter.get("user", BSONDocument( "_id" -> BSONObjectID(id) ) ).one[UserObject]
+
+      } 
 
       }
 
@@ -199,9 +272,6 @@ object ObjectsHandler{
 
 
 
-  import UserFields._
-import UserObject.UserBSONWriter
-import UserObject.UserBSONReader
 
 
 
@@ -236,7 +306,9 @@ def add(a:UserObject){
 def get(name :String , password: String) = {
 
   //DbAdapter.get("user",BSONDocument()).map(docOpt => docOpt.map(doc => "a"/*UserObject.read(doc)*/));
+  
   DbAdapter.get("user",BSONDocument("email"-> name , "password" -> password)).one[UserObject]
+  
   // val filter = BSONDocument("_id" -> 1)
 }
 def connect(){ 
@@ -246,7 +318,7 @@ def connect(){
   
   // val filter = BSONDocument("_id" -> 1)
 
-  collection.
+ /* collection.
     find(query).
     cursor[BSONDocument].
     enumerate().apply(Iteratee.foreach { doc =>
@@ -257,18 +329,18 @@ def connect(){
      "Name" -> "Stephane",
      "lastName" -> "Godbillon",
      "age" -> 29)
-
+  */
    //val future1: Future[WriteResult] = collection.insert(document)
    
 
 }
 
-/*  def connect() {
+  def connects() {
       // gets an instance of the driver
       // (creates an actor system)
-      println("\n\n\n\n\n\n\n1\n\n\n\n\n\n\n")
+     // println("\n\n\n\n\n\n\n1\n\n\n\n\n\n\n")
 
-      val driver = new MongoDriver
+    /*  val driver = new MongoDriver
       println("\n\n\n\n\n\n\n2\n\n\n\n\n\n\n")
 
       val connection = driver.connection(List("localhost"))
@@ -280,11 +352,11 @@ def connect(){
 
       println("\n\n\n\n\n\n\n4\n\n\n\n\n\n\n")
 
-      val collection = db[BSONCollection]("tweet")
+     // val collection = db[BSONCollection]("tweet")
       
       println("\n\n\n\n\n\n\n5\n\n\n\n\n\n\n")
 
-      val query = BSONDocument("name" -> "mostafa")
+      val query = BSONDocument("body" -> "aaad")
 
       println("\n\n\n\n\n\n\n6\n\n\n\n\n\n\n")
     
@@ -315,7 +387,7 @@ def connect(){
      throw e
      case Success(writeResult) =>
        println(s"\n\n\n\n\n\nsuccessfully inserted document with result: $writeResult\n\n\n\n\n\n")
-   }
+   }*/
 
 
   //update
@@ -332,9 +404,9 @@ def connect(){
 
     println("\n\n\n\n\n\nSuccessfullyyyyyyyyy Updated\n\n\n\n\n\n")
   */
-  driver.close()
+  //driver.close()
   
-  }*/
+  }
 
 }
 

@@ -2,41 +2,30 @@
 [0m[[0mdebug[0m] [0mInitial source changes: [0m
 [0m[[0mdebug[0m] [0m	removed:Set()[0m
 [0m[[0mdebug[0m] [0m	added: Set()[0m
-[0m[[0mdebug[0m] [0m	modified: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala, /home/mostafa/study/iti/akka/Twitter/src/main/scala/models.scala)[0m
+[0m[[0mdebug[0m] [0m	modified: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala)[0m
 [0m[[0mdebug[0m] [0mRemoved products: Set()[0m
 [0m[[0mdebug[0m] [0mExternal API changes: API Changes: Set()[0m
 [0m[[0mdebug[0m] [0mModified binary dependencies: Set()[0m
-[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala, /home/mostafa/study/iti/akka/Twitter/src/main/scala/models.scala)[0m
+[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala)[0m
 [0m[[0mdebug[0m] [0m[0m
 [0m[[0mdebug[0m] [0mSources indirectly invalidated by:[0m
 [0m[[0mdebug[0m] [0m	product: Set()[0m
 [0m[[0mdebug[0m] [0m	binary dep: Set()[0m
 [0m[[0mdebug[0m] [0m	external source: Set()[0m
-[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala, /home/mostafa/study/iti/akka/Twitter/src/main/scala/models.scala)[0m
-[0m[[0minfo[0m] [0mCompiling 2 Scala sources to /home/mostafa/study/iti/akka/Twitter/target/scala-2.11/classes...[0m
+[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala)[0m
+[0m[[0minfo[0m] [0mCompiling 1 Scala source to /home/mostafa/study/iti/akka/Twitter/target/scala-2.11/classes...[0m
 [0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.11.7[0m
 [0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.11.7[0m
-[0m[[0mdebug[0m] [0mRunning cached compiler 25681912, interfacing (CompilerInterface) with Scala compiler version 2.11.7[0m
+[0m[[0mdebug[0m] [0mRunning cached compiler 7185e273, interfacing (CompilerInterface) with Scala compiler version 2.11.7[0m
 [0m[[0mdebug[0m] [0mCalling Scala compiler with arguments  (CompilerInterface):[0m
 [0m[[0mdebug[0m] [0m	-bootclasspath[0m
 [0m[[0mdebug[0m] [0m	/home/mostafa/study/iti/Java/JAVA/jdk1.8.0_65/jre/lib/resources.jar:/home/mostafa/study/iti/Java/JAVA/jdk1.8.0_65/jre/lib/rt.jar:/home/mostafa/study/iti/Java/JAVA/jdk1.8.0_65/jre/lib/sunrsasign.jar:/home/mostafa/study/iti/Java/JAVA/jdk1.8.0_65/jre/lib/jsse.jar:/home/mostafa/study/iti/Java/JAVA/jdk1.8.0_65/jre/lib/jce.jar:/home/mostafa/study/iti/Java/JAVA/jdk1.8.0_65/jre/lib/charsets.jar:/home/mostafa/study/iti/Java/JAVA/jdk1.8.0_65/jre/lib/jfr.jar:/home/mostafa/study/iti/Java/JAVA/jdk1.8.0_65/jre/classes:/home/mostafa/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.7.jar[0m
 [0m[[0mdebug[0m] [0m	-classpath[0m
 [0m[[0mdebug[0m] [0m	/home/mostafa/study/iti/akka/Twitter/target/scala-2.11/classes:/home/mostafa/.ivy2/cache/com.typesafe.akka/akka-stream-experimental_2.11/jars/akka-stream-experimental_2.11-1.0.jar:/home/mostafa/.ivy2/cache/com.typesafe.akka/akka-actor_2.11/jars/akka-actor_2.11-2.3.12.jar:/home/mostafa/.ivy2/cache/com.typesafe/config/bundles/config-1.2.1.jar:/home/mostafa/.ivy2/cache/org.reactivestreams/reactive-streams/jars/reactive-streams-1.0.0.jar:/home/mostafa/.ivy2/cache/com.typesafe.akka/akka-http-core-experimental_2.11/jars/akka-http-core-experimental_2.11-1.0.jar:/home/mostafa/.ivy2/cache/com.typesafe.akka/akka-parsing-experimental_2.11/jars/akka-parsing-experimental_2.11-1.0.jar:/home/mostafa/.ivy2/cache/com.typesafe.akka/akka-http-experimental_2.11/jars/akka-http-experimental_2.11-1.0.jar:/home/mostafa/.ivy2/cache/com.typesafe.akka/akka-http-spray-json-experimental_2.11/jars/akka-http-spray-json-experimental_2.11-1.0.jar:/home/mostafa/.ivy2/cache/io.spray/spray-json_2.11/bundles/spray-json_2.11-1.3.2.jar:/home/mostafa/.ivy2/cache/org.reactivemongo/reactivemongo_2.11/jars/reactivemongo_2.11-0.11.7.jar:/home/mostafa/.ivy2/cache/org.reactivemongo/reactivemongo-bson-macros_2.11/jars/reactivemongo-bson-macros_2.11-0.11.7.jar:/home/mostafa/.ivy2/cache/org.scala-lang/scala-compiler/jars/scala-compiler-2.11.7.jar:/home/mostafa/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.11.7.jar:/home/mostafa/.ivy2/cache/org.scala-lang.modules/scala-xml_2.11/bundles/scala-xml_2.11-1.0.4.jar:/home/mostafa/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.11/bundles/scala-parser-combinators_2.11-1.0.4.jar:/home/mostafa/.ivy2/cache/org.reactivemongo/reactivemongo-bson_2.11/jars/reactivemongo-bson_2.11-0.11.7.jar:/home/mostafa/.ivy2/cache/io.netty/netty/bundles/netty-3.10.4.Final.jar:/home/mostafa/.ivy2/cache/com.typesafe.play/play-iteratees_2.11/jars/play-iteratees_2.11-2.3.5.jar:/home/mostafa/.ivy2/cache/org.scala-stm/scala-stm_2.11/jars/scala-stm_2.11-0.7.jar:/home/mostafa/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.10.jar:/home/mostafa/.ivy2/cache/org.apache.logging.log4j/log4j-api/jars/log4j-api-2.0.2.jar:/home/mostafa/.ivy2/cache/org.apache.logging.log4j/log4j-core/jars/log4j-core-2.0.2.jar:/home/mostafa/.ivy2/cache/com.typesafe.akka/akka-http-testkit-experimental_2.11/jars/akka-http-testkit-experimental_2.11-1.0.jar:/home/mostafa/.ivy2/cache/com.typesafe.akka/akka-testkit_2.11/jars/akka-testkit_2.11-2.3.12.jar:/home/mostafa/.ivy2/cache/io.spray/spray-routing_2.11/bundles/spray-routing_2.11-1.3.3.jar:/home/mostafa/.ivy2/cache/io.spray/spray-http_2.11/bundles/spray-http_2.11-1.3.3.jar:/home/mostafa/.ivy2/cache/io.spray/spray-util_2.11/bundles/spray-util_2.11-1.3.3.jar:/home/mostafa/.ivy2/cache/org.parboiled/parboiled-scala_2.11/jars/parboiled-scala_2.11-1.1.7.jar:/home/mostafa/.ivy2/cache/org.parboiled/parboiled-core/jars/parboiled-core-1.1.7.jar:/home/mostafa/.ivy2/cache/io.spray/spray-httpx_2.11/bundles/spray-httpx_2.11-1.3.3.jar:/home/mostafa/.ivy2/cache/org.jvnet.mimepull/mimepull/jars/mimepull-1.9.5.jar:/home/mostafa/.ivy2/cache/com.chuusai/shapeless_2.11/jars/shapeless_2.11-1.2.4.jar:/home/mostafa/.ivy2/cache/io.spray/spray-client_2.11/bundles/spray-client_2.11-1.3.3.jar:/home/mostafa/.ivy2/cache/io.spray/spray-can_2.11/bundles/spray-can_2.11-1.3.3.jar:/home/mostafa/.ivy2/cache/io.spray/spray-io_2.11/bundles/spray-io_2.11-1.3.3.jar[0m
-[0m[[33mwarn[0m] [0mthere was one deprecation warning; re-run with -deprecation for details[0m
-[0m[[33mwarn[0m] [0mone warning found[0m
-[0m[[0mdebug[0m] [0mScala compilation took 12.226627596 s[0m
-[0m[[0mdebug[0m] [0mInvalidating /home/mostafa/study/iti/akka/Twitter/src/main/scala/models.scala...[0m
-[0m[[0mdebug[0m] [0mInvalidating (transitively) by inheritance from /home/mostafa/study/iti/akka/Twitter/src/main/scala/models.scala...[0m
-[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/models.scala)[0m
-[0m[[0mdebug[0m] [0mInvalidated by transitive inheritance dependency: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/models.scala)[0m
-[0m[[0mdebug[0m] [0mThe /home/mostafa/study/iti/akka/Twitter/src/main/scala/models.scala source file has the following regular definitions changed:[0m
-[0m[[0mdebug[0m] [0m	fromBson, add.[0m
-[0m[[0mdebug[0m] [0mAll member reference dependencies will be considered within this context.[0m
-[0m[[0mdebug[0m] [0mThe following modified names cause invalidation of /home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala: Set(add)[0m
-[0m[[0mdebug[0m] [0mNone of the modified names appears in /home/mostafa/study/iti/akka/Twitter/src/main/scala/dbAdapter.scala. This dependency is not being considered for invalidation.[0m
+[0m[[0mdebug[0m] [0mScala compilation took 10.608760421 s[0m
 [0m[[0mdebug[0m] [0mNew invalidations:[0m
-[0m[[0mdebug[0m] [0m	Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala)[0m
-[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/mostafa/study/iti/akka/Twitter/src/main/scala/Main.scala)[0m
+[0m[[0mdebug[0m] [0m	Set()[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set()[0m
 [0m[[0mdebug[0m] [0mPreviously invalidated, but (transitively) depend on new invalidations:[0m
 [0m[[0mdebug[0m] [0m	Set()[0m
 [0m[[0mdebug[0m] [0mAll newly invalidated sources after taking into account (previously) recompiled sources:Set()[0m

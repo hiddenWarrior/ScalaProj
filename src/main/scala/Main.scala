@@ -119,7 +119,7 @@ import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader,
 import scala.util.{Success, Failure}
                       import spray.json._
                       import DefaultJsonProtocol._ // if you don't supply your own Protocol (see below)
-
+connects()
   startServer(interface="localhost", port = 8080){
         
         path("users"/"signup"){
@@ -152,7 +152,7 @@ import scala.util.{Success, Failure}
                     CaseString(usr.get.id.stringify).toJson.prettyPrint}
                 //case Success(usr) => complete( )
                 case Failure(ex)  => complete(s"An error occurred: ${ex.getMessage}")                
-              }~complete{"not found"} 
+              } 
 
             }
 
@@ -176,47 +176,74 @@ import scala.util.{Success, Failure}
 
             }    
         }~
-        path("users"/IntNumber/"tweets"){ uId=>
+        path("users"/Segment/"tweets"){ uId=>
 
           get{
-            respondWithMediaType(MediaTypes.`application/json`){
-              complete("uidoftweet:\""+uId+"\"")
-            }
-          }
+            println("sending to database")
+            onComplete(TweetSimple.getByUser(uId)){
 
-        }~
-        path("tweets"/IntNumber){userNum=>
-          get{
-            respondWithMediaType(MediaTypes.`application/json`){
-              complete("realuidoftweet:\"ok\"")
+              case Success(tweets) => complete{TweetSimple.jsonList(tweets.map(doc => TweetSimple.fromBson(doc))) }
+              case Failure(ex)  => complete(s"An error occurres: ${ex.getMessage}")               
+    
+              }
             }
+              /*onComplete(TweetSimple.getByUser(uId)){
+              case Success(tweets) => complete{
+                  if(tweets == None)
+                    "[]"
+                  else  
+                    TweetSimple.jsonList(tweets)}
+                //case Success(usr) => complete( )
+                case Failure(ex)  => complete(s"An error occurred: ${ex.getMessage}")               
+
+            }*/
+            //complete(uId)
+            /*respondWithMediaType(MediaTypes.`application/json`){
+              complete("{uidoftweet:\""+uId+"\"}")
+            }*/
           
-          }
 
-
+        
         }~
-        path("tweets"/IntNumber){(tweetNum)=>
+        path("tweets"/Segment){(tweetNum)=>
           get{
             respondWithMediaType(MediaTypes.`application/json`){
-              complete("\"realuidoftweet\":"+tweetNum+"\"ok\"")
+              onComplete(TweetSimple.getById(tweetNum)){
+                case Success(twt) => complete{
+                  if(twt == None || twt.get == None)
+                    CaseString("0").toJson.prettyPrint
+                  else  
+                    TweetSimple.fromBson(twt.get).toJson.prettyPrint
+                  }
+                //case Success(usr) => complete( )
+                case Failure(ex)  => complete(s"An error occurred: ${ex.getMessage}")                
+
+              
             }
 
-          }~
-          delete{(tweetNum)=>
+
+            }
+          }
+          
+
+        
+        }~
+        path("tweets"/Segment){(tweetNum)=>
+          delete{
+            TweetSimple.removeById(tweetNum);
             complete("");
           }
 
-
         }~
-        path("users"/IntNumber/"follow"/IntNumber){(user1,user2) =>
+        path("users"/Segment/"follow"/Segment){(user1,user2) =>
           get{
 
-            respondWithMediaType(MediaTypes.`application/json`){
-              complete("\"realuidoftweet\":\""+user1 + "------->" + user2 +"ok\"")
-            }          
-          }
+              complete("bye")
+                      
+          
+        }
         }~
-        path("users"/IntNumber/"unfollow"/IntNumber){(user1,user2) =>
+        path("users"/Segment/"unfollow"/Segment){(user1,user2) =>
           get{
             respondWithMediaType(MediaTypes.`application/json`){
               complete("\"realuidoftweet\":\"ok\"")
